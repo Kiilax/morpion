@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 namespace Morpion
 {
     class Morpion
@@ -71,6 +72,7 @@ namespace Morpion
         private static void RemplirCaseIA()
         {
             int bestMove = -1;
+            List<int> bestMoves = new List<int>();
             int bestScore = -1000;
             for(int i= 0; i < 9; i++)
             {
@@ -83,10 +85,21 @@ namespace Morpion
                     int score = AI.MiniMax(grille, i ,true);
                     if(bestScore < score)
                     {
+                        bestMoves.Clear();
+                        bestMoves.Add(i);
                         bestScore = score;
                         bestMove = i;
                     }
+                    else if(bestScore == score)
+                    {
+                        bestMoves.Add(i);
+                    }
                 }
+            }
+            if(bestMoves.Count > 1)
+            {
+                Random random = new Random();
+                bestMove = bestMoves[random.Next(0, bestMoves.Count)];
             }
             grille[bestMove] = "O";
         }
